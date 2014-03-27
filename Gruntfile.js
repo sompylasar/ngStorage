@@ -17,10 +17,18 @@ module.exports = function(grunt) {
                 },
 
                 frameworks: ['mocha'],
+                plugins:[
+                    'karma-mocha',
+                    'karma-phantomjs-launcher',
+                    'karma-safari-launcher',
+                    'karma-chrome-launcher',
+                    'karma-firefox-launcher',
+                ],
 
                 browsers: [
                     'Chrome',
                     'PhantomJS',
+                    'Safari',
                     'Firefox'
                 ],
 
