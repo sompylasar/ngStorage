@@ -29,11 +29,11 @@
 
     function _storageProvider(storageType) {
         // Add storage type to dispatch handling of the 'storage' events.
-        var prefix = 'ngStorage-' + storageType + '-';
+        var providerPrefix = 'ngStorage-' + storageType + '-';
         return {
             setPrefix: function(value) {
                 if (angular.isString(value)) {
-                    prefix = value;
+                    providerPrefix = value;
                 }
             },
             $get: [
@@ -73,7 +73,10 @@
                         return storageImpl;
                     }
 
-                    var webStorageFallback = {
+                    // Capture current prefix in a local variable in case the provider is used twice with different prefixes. 
+                    var prefix = providerPrefix,
+                        prefixLen = prefix.length,
+                        webStorageFallback = {
                             setItem: function() {},
                             getItem: function() {},
                             removeItem: function() {},
@@ -100,7 +103,6 @@
                                 return $storage.$default(items);
                             }
                         },
-                        prefixLen = prefix.length,
                         _last$storage,
                         _debounce;
 
