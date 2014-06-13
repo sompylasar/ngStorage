@@ -28,7 +28,8 @@
     provider('$sessionStorage', _storageProvider('sessionStorage'));
 
     function _storageProvider(storageType) {
-        var prefix = 'ngStorage-';
+        // Add storage type to dispatch handling of the 'storage' events.
+        var prefix = 'ngStorage-' + storageType + '-';
         return {
             setPrefix: function(value) {
                 if (angular.isString(value)) {
@@ -131,7 +132,7 @@
                     });
 
                     // #6: Use `$window.addEventListener` instead of `angular.element` to avoid the jQuery-specific `event.originalEvent`
-                    'localStorage' === storageType && $window.addEventListener && $window.addEventListener('storage', function(event) {
+                    $window.addEventListener && $window.addEventListener('storage', function(event) {
                         if (prefix === event.key.slice(0, prefixLen)) {
                             event.newValue ? $storage[event.key.slice(prefixLen)] = angular.fromJson(event.newValue) : delete $storage[event.key.slice(prefixLen)];
 

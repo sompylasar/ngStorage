@@ -41,10 +41,12 @@ angular.module('app', [
 angular.module('app', [
     'ngStorage'
 ]).config(['$localStorageProvider', '$sessionStorageProvider', function ($localStorageProvider, $sessionStorageProvider) {
-    localStorageProvider.setPrefix('myCustomPrefix-');
-    sessionStorageProvider.setPrefix('myOtherCustomPrefix-');
+    $localStorageProvider.setPrefix('myCustomPrefix-');
+    $sessionStorageProvider.setPrefix('myOtherCustomPrefix-');
 }])
 ```
+
+**Note:** Prefixes are used to dispatch `'storage'` events because `event.storageArea` looks unreliable across browsers, so if both `$localStorage` and `$sessionStorage` are used, the prefixes **should not** be the same.
 
 ### Read and Write | [Demo](http://plnkr.co/edit/3vfRkvG7R9DgQxtWbGHz?p=preview)
 
