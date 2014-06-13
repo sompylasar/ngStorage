@@ -10,4 +10,10 @@ describe('ngStorage', function () {
     ){
         expect($localStorage).not.to.equal(null);
     }));
+
+    it('should contain a $sessionStorage service', inject(function(
+        $sessionStorage
+    ){
+        expect($sessionStorage).not.to.equal(null);
+    }));
 });

@@ -45,7 +45,7 @@
                     $window,
                     $timeout,
                     $log
-                ){
+                ) {
 
                     function getStorageImpl(storageType) {
                         var storageImpl = $window[storageType];
@@ -61,21 +61,29 @@
                                 storageImpl.removeItem(key);
                             }
                             catch (err) {
-                                storageImpl = false;
+                                storageImpl = undefined;
                             }
                         }
 
                         if (!storageImpl) {
                             $log.warn('This browser does not support Web Storage!');
-                            // #9: Assign a placeholder object if Web Storage is unavailable to prevent breaking the entire AngularJS app
-                            storageImpl = { setItem: function() {}, getItem: function() {} };
                         }
 
                         return storageImpl;
                     }
 
-                    var webStorage = getStorageImpl(storageType),
+                    var webStorageFallback = {
+                            setItem: function() {},
+                            getItem: function() {},
+                            removeItem: function() {},
+                            clear: function() {},
+                            key: function() {},
+                            length: 0
+                        },
+                        // #9: Assign a placeholder object if Web Storage is unavailable to prevent breaking the entire AngularJS app
+                        webStorage = (getStorageImpl(storageType) || webStorageFallback),
                         $storage = {
+                            $supported: function() { return (webStorage && webStorage !== webStorageFallback); },
                             $default: function(items) {
                                 for (var k in items) {
                                     angular.isDefined($storage[k]) || ($storage[k] = items[k]);
